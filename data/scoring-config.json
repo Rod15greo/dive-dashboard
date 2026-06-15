@@ -1,0 +1,11 @@
+{
+  "weights": {
+    "technical":    { "delivery": 0.45, "activity": 0.45, "presence": 0.00, "collab": 0.10 },
+    "nontechnical": { "delivery": 0.45, "activity": 0.30, "presence": 0.00, "collab": 0.25 },
+    "leadership":   { "delivery": 0.40, "activity": 0.30, "presence": 0.00, "collab": 0.30 }
+  },
+  "presenceBonusThreshold": 8,
+  "presenceBonusPoints": 10,
+  "discordCap": 80,
+  "enableV1": false
+}

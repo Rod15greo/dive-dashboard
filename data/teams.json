@@ -1,0 +1,26 @@
+[
+  {
+    "id": "unity",
+    "name": "Unity",
+    "leaderId": "joao_vitor",
+    "memberIds": ["bianca", "math", "stefane", "luiz"]
+  },
+  {
+    "id": "infra",
+    "name": "Infra / Web / Core",
+    "leaderId": "nicolas",
+    "memberIds": ["gabriel", "sergio", "yago"]
+  },
+  {
+    "id": "validacao",
+    "name": "Validação",
+    "leaderId": "andrem",
+    "memberIds": ["rafaela", "augusto"]
+  },
+  {
+    "id": "design",
+    "name": "Design / Tech Art",
+    "leaderId": null,
+    "memberIds": ["laianny", "tejota", "pedro", "rafael"]
+  }
+]

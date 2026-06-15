@@ -1,0 +1,61 @@
+{
+  "name": "smartfactory-meeting-automation",
+  "version": "1.0.0",
+  "description": "Automação de reuniões, atas e pautas do projeto Dive Training / Smart Factory",
+  "scripts": {
+    "auth": "ts-node src/auth.ts",
+    "calendar:dry-run": "ts-node src/createCalendarEvents.ts --dry-run",
+    "calendar:apply": "ts-node src/createCalendarEvents.ts --apply",
+    "server": "ts-node src/webhookServer.ts",
+    "test:fireflies": "ts-node src/firefliesClient.ts --test",
+    "test:notion": "ts-node src/notionClient.ts --test",
+    "test:google": "ts-node src/googleDocsClient.ts --test",
+    "bot:scheduler": "ts-node src/botScheduler.ts",
+    "calendar:cleanup": "ts-node src/cleanupCalendarEvents.ts",
+    "calendar:cleanup:apply": "ts-node src/cleanupCalendarEvents.ts --apply",
+    "dashboard:drive": "ts-node src/dashboard/scanDrive.ts",
+    "dashboard:fetch": "ts-node src/dashboard/fetchMissingTranscripts.ts",
+    "dashboard:build": "ts-node src/dashboard/collectAll.ts",
+    "notion:backup": "ts-node src/backupAndCleanNotion.ts --dry-run",
+    "notion:cleanup": "ts-node src/backupAndCleanNotion.ts --apply",
+    "fireflies:cleanup": "ts-node src/cleanupFireflies.ts --dry-run",
+    "fireflies:cleanup:apply": "ts-node src/cleanupFireflies.ts --apply",
+    "web:install": "cd web && npm install",
+    "web:build": "cd web && npm run build",
+    "web:dev": "cd web && npm run dev",
+    "setup": "npm install && cd web && npm install && npm run build",
+    "test": "jest --testPathPatterns=src/__tests__"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.tsx?$": ["ts-jest", { "tsconfig": { "module": "commonjs" } }]
+    }
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^7.19.0",
+    "@ngrok/ngrok": "^1.7.0",
+    "@notionhq/client": "^2.2.15",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express-session": "^1.19.0",
+    "@types/node-cron": "^3.0.11",
+    "axios": "^1.7.2",
+    "better-sqlite3": "^12.10.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.19.0",
+    "googleapis": "^140.0.1",
+    "node-cron": "^4.2.1",
+    "openai": "^4.52.7",
+    "yaml": "^2.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.14.9",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  }
+}

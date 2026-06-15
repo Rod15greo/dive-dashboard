@@ -1,0 +1,23 @@
+node_modules/
+web/node_modules/
+dist/
+web/dist/
+
+# Segredos e credenciais — NUNCA commitar
+.env
+credentials.json
+token.json
+token_tmp.json
+creds_tmp.json
+service-account.json
+
+# Runtime
+storage/
+dashboard-cache.json
+dashboard-drive-data.json
+dashboard-data.json
+
+# Logs e temporários
+*.log
+*.js.map
+backup/

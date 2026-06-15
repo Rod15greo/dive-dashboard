@@ -1,0 +1,20 @@
+services:
+  dashboard:
+    build: .
+    container_name: dive-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      # Persiste sessões, cache e backups entre restarts
+      - ./storage:/app/storage
+      # Permite atualizar configurações sem rebuild
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
