@@ -24,18 +24,6 @@
     "firefliesNames": ["Andrem", "Andrem Mohr", "Andre Mohr", "André Mohr"]
   },
   {
-    "id": "rafaela",
-    "name": "Rafaela",
-    "role": "Validação",
-    "scoreRole": "nontechnical",
-    "technical": false,
-    "coordinator": false,
-    "github": ["RafaelaCcyber"],
-    "emails": ["rafaelafrade9@gmail.com"],
-    "discordIds": ["1460737539056074839"],
-    "firefliesNames": ["Rafaela", "Rafaela Frade"]
-  },
-  {
     "id": "bianca",
     "name": "Bianca Miranda",
     "role": "Unity",
@@ -66,7 +54,7 @@
     "scoreRole": "nontechnical",
     "technical": false,
     "coordinator": false,
-    "github": ["TeJota1337"],
+    "github": ["TeJota1337", "TeJotaXR"],
     "emails": ["tjddsouza@gmail.com"],
     "discordIds": ["276604113326702593"],
     "firefliesNames": ["TeJota", "TJ", "Tiago Souza"]
@@ -94,18 +82,6 @@
     "emails": ["jvferreira@diverealities.com"],
     "discordIds": ["414572528527212555"],
     "firefliesNames": ["João Vitor", "Joao Vitor", "João Vitor Ferreira", "Zircon", "ZirconGames"]
-  },
-  {
-    "id": "gabriel",
-    "name": "Gabriel Marques",
-    "role": "Infra",
-    "scoreRole": "technical",
-    "technical": true,
-    "coordinator": false,
-    "github": ["Perkhad"],
-    "emails": ["gabrieldamatamarques@gmail.com"],
-    "discordIds": ["212315753930686464"],
-    "firefliesNames": ["Gabriel", "Gabriel Marques", "Gabriel da Mata Marques"]
   },
   {
     "id": "rodrigo",
@@ -142,18 +118,6 @@
     "emails": ["meneguzzo.contato@gmail.com"],
     "discordIds": ["270369119684132864"],
     "firefliesNames": ["Rafael", "Rafael Meneguzzo"]
-  },
-  {
-    "id": "yago",
-    "name": "Yago Andrade",
-    "role": "Core",
-    "scoreRole": "technical",
-    "technical": true,
-    "coordinator": false,
-    "github": ["yagoandrade"],
-    "emails": ["ayav@ic.ufal.br", "contact@yagoandrade.com"],
-    "discordIds": ["206250874610122755"],
-    "firefliesNames": ["Yago", "Yago Andrade"]
   },
   {
     "id": "nicolas",
@@ -202,6 +166,42 @@
     "emails": ["mia@diverealities.com"],
     "discordIds": ["432716644301930499"],
     "firefliesNames": ["Mia", "Mia Saiki"]
+  },
+  {
+    "id": "bernardo",
+    "name": "Bernardo Nunes",
+    "role": "Unity",
+    "scoreRole": "technical",
+    "technical": true,
+    "coordinator": false,
+    "github": [],
+    "emails": ["benunes96@gmail.com"],
+    "discordIds": [],
+    "firefliesNames": ["Bernardo", "Bernardo Nunes"]
+  },
+  {
+    "id": "ravan",
+    "name": "Ravan",
+    "role": "Core/Cloud",
+    "scoreRole": "technical",
+    "technical": true,
+    "coordinator": false,
+    "github": [],
+    "emails": ["ravanreis@gmail.com"],
+    "discordIds": [],
+    "firefliesNames": ["Ravan"]
+  },
+  {
+    "id": "guilherme",
+    "name": "Guilherme Bressan",
+    "role": "Validação",
+    "scoreRole": "nontechnical",
+    "technical": false,
+    "coordinator": false,
+    "github": [],
+    "emails": ["guilhermebressan@outlook.com"],
+    "discordIds": [],
+    "firefliesNames": ["Guilherme", "Guilherme Bressan"]
   },
   {
     "id": "augusto",

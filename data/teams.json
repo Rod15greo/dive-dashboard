@@ -3,19 +3,19 @@
     "id": "unity",
     "name": "Unity",
     "leaderId": "joao_vitor",
-    "memberIds": ["bianca", "math", "stefane", "luiz"]
+    "memberIds": ["bianca", "math", "stefane", "bernardo"]
   },
   {
     "id": "infra",
     "name": "Infra / Web / Core",
     "leaderId": "nicolas",
-    "memberIds": ["gabriel", "sergio", "yago"]
+    "memberIds": ["sergio", "ravan"]
   },
   {
     "id": "validacao",
     "name": "Validação",
     "leaderId": "andrem",
-    "memberIds": ["rafaela", "augusto"]
+    "memberIds": ["augusto", "guilherme"]
   },
   {
     "id": "design",

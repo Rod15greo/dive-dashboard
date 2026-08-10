@@ -16,7 +16,7 @@ export const SCORE_ROLE_MAP: Record<string, ScoreRole> = {
   anders:    'leadership', rodrigo:   'leadership',
   nicolas:   'leadership', joao_vitor:'leadership',
   stefane:   'technical',  math:      'technical',
-  yago:      'technical',  bianca:    'technical',
+  bianca:    'technical',
   pedro:     'technical',  leonardo:  'technical',
   gabriel:   'technical',
   laianny:   'nontechnical', rafaela: 'nontechnical',

@@ -135,16 +135,6 @@ export const TEAM: TeamMember[] = [
     firefliesNames: ['Rafael', 'Rafael Meneguzzo'],
   },
   {
-    id: 'yago',
-    name: 'Yago Andrade',
-    role: 'Core',
-    technical: true,
-    github: 'yagoandrade',
-    email: ['ayav@ic.ufal.br', 'contact@yagoandrade.com'],
-    discordIds: ['206250874610122755'],
-    firefliesNames: ['Yago', 'Yago Andrade'],
-  },
-  {
     id: 'nicolas',
     name: 'Nicolas Costa',
     role: 'Infra',
