@@ -12,6 +12,8 @@ services:
       - ./storage:/app/storage
       # Permite atualizar configurações sem rebuild
       - ./data:/app/data
+      # Dados de atividade no Drive (gerado pelo script de coleta)
+      - ./dashboard-drive-data.json:/app/dashboard-drive-data.json
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
       interval: 30s
