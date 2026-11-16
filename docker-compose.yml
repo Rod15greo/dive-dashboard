@@ -10,10 +10,11 @@ services:
     volumes:
       # Persiste sessões, cache e backups entre restarts
       - ./storage:/app/storage
-      # Permite atualizar configurações sem rebuild
+      # Configurações (members.json, teams.json, scoring-config.json) e
+      # dashboard-drive-data.json (opcional, gerado pelo script de coleta do Drive).
+      # Não montar dashboard-drive-data.json como arquivo isolado: se ele não existir,
+      # o Docker cria uma PASTA com esse nome e a coleta quebra.
       - ./data:/app/data
-      # Dados de atividade no Drive (gerado pelo script de coleta)
-      - ./dashboard-drive-data.json:/app/dashboard-drive-data.json
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
       interval: 30s

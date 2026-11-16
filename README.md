@@ -90,6 +90,10 @@ cp data/teams.example.json   data/teams.json
 - `data/teams.json` — definição dos times e líderes (usa os `id` de `members.json`)
 - `data/scoring-config.json` — pesos do sistema de score
 
+Métricas do Drive (opcional): coloque o JSON gerado pela coleta do Drive em `data/dashboard-drive-data.json`
+(a pasta `data/` é montada no container). O caminho antigo `./dashboard-drive-data.json` na raiz ainda é lido
+fora do Docker, mas não é mais montado pelo `docker-compose.yml`.
+
 Se `members.json`/`teams.json` não existirem, o servidor usa os `*.example.json` (dados fictícios) e avisa no log.
 
 As alterações em `data/` são lidas na inicialização: depois de editar, rode `docker compose restart`.

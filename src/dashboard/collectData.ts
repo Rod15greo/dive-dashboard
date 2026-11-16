@@ -78,11 +78,23 @@ interface DrivePerson {
 }
 
 function loadDriveData(): Record<string, number> {
-  const filePath = path.resolve(__dirname, '../../dashboard-drive-data.json');
-  if (!fs.existsSync(filePath)) return {};
-  const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as { byPerson: DrivePerson[] };
+  // Preferência: data/dashboard-drive-data.json (pasta montada no Docker);
+  // fallback: dashboard-drive-data.json na raiz (layout antigo).
+  const candidates = [
+    path.resolve(__dirname, '../../data/dashboard-drive-data.json'),
+    path.resolve(__dirname, '../../dashboard-drive-data.json'),
+  ];
+  const filePath = candidates.find(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  if (!filePath) return {};
+  let raw: { byPerson?: DrivePerson[] };
+  try {
+    raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (e) {
+    console.warn(`⚠ Drive: falha ao ler ${filePath}, ignorando:`, (e as Error).message);
+    return {};
+  }
   const result: Record<string, number> = {};
-  for (const person of raw.byPerson) {
+  for (const person of raw.byPerson ?? []) {
     const member = findByEmail(person.email);
     if (!member) continue;
     const humanFiles = person.files.filter(f => !f.folder.includes('Atas de reunião'));
