@@ -23,7 +23,11 @@ fs.mkdirSync(path.resolve(__dirname, '../storage'), { recursive: true });
 
 const app  = express();
 const PORT = parseInt(process.env.PORT ?? '3000', 10);
-app.use(express.json());
+app.set('trust proxy', 1); // necessário para cookies secure atrás de Nginx/proxy reverso
+// Guarda o corpo bruto para validar a assinatura HMAC do webhook sobre os bytes originais
+app.use(express.json({
+  verify: (req, _res, buf) => { (req as unknown as { rawBody?: Buffer }).rawBody = buf; },
+}));
 app.use(sessionMiddleware());
 
 // Dashboard API (auth routes + protected API + SSE)
@@ -80,15 +84,23 @@ app.post('/webhooks/fireflies', async (req, res) => {
   try {
     // HMAC signature validation
     const webhookSecret = process.env.FIREFLIES_WEBHOOK_SECRET;
+    if (!webhookSecret && process.env.NODE_ENV === 'production') {
+      // Sem secret qualquer um poderia disparar processamento (custo de LLM, docs no Drive)
+      console.error('❌ Webhook rejeitado: FIREFLIES_WEBHOOK_SECRET não definido em produção');
+      res.status(503).json({ error: 'webhook secret not configured' });
+      return;
+    }
     if (webhookSecret) {
-      const sig = req.headers['x-fireflies-signature'] as string | undefined;
-      if (!sig) {
+      const rawSig = (req.headers['x-hub-signature'] ?? req.headers['x-fireflies-signature']) as string | undefined;
+      if (!rawSig) {
         res.status(401).json({ error: 'missing signature' });
         return;
       }
+      const sig = rawSig.replace(/^sha256=/i, '');
+      const rawBody = (req as unknown as { rawBody?: Buffer }).rawBody;
       const expected = crypto
         .createHmac('sha256', webhookSecret)
-        .update(JSON.stringify(req.body))
+        .update(rawBody ?? JSON.stringify(req.body))
         .digest('hex');
       try {
         if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
@@ -295,6 +307,12 @@ initStore().then(async () => {
   const missingDiscord = TEAM.filter(m => !m.discordIds || m.discordIds.length === 0);
   if (missingDiscord.length > 0) {
     console.warn(`⚠ Membros sem Discord ID (Discord sempre 0): ${missingDiscord.map(m => m.name).join(', ')}`);
+  }
+
+  if (!process.env.FIREFLIES_WEBHOOK_SECRET) {
+    console.warn(process.env.NODE_ENV === 'production'
+      ? '⚠ FIREFLIES_WEBHOOK_SECRET não definido — /webhooks/fireflies vai rejeitar todas as chamadas (produção)'
+      : '⚠ FIREFLIES_WEBHOOK_SECRET não definido — /webhooks/fireflies aceita chamadas sem assinatura (apenas dev)');
   }
 
   app.listen(PORT, () => {

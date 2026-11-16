@@ -19,8 +19,11 @@ declare module 'express-session' {
   }
 }
 
-const REDIRECT_URI = process.env.PUBLIC_WEBHOOK_URL
-  ? `${process.env.PUBLIC_WEBHOOK_URL}/auth/callback`
+// PUBLIC_URL também vale: o webhookServer só copia PUBLIC_URL para PUBLIC_WEBHOOK_URL
+// depois que este módulo já foi carregado, então sem este fallback o redirect ia para localhost.
+const PUBLIC_BASE_URL = process.env.PUBLIC_WEBHOOK_URL || process.env.PUBLIC_URL || '';
+const REDIRECT_URI = PUBLIC_BASE_URL
+  ? `${PUBLIC_BASE_URL}/auth/callback`
   : `http://localhost:${process.env.PORT ?? '3000'}/auth/callback`;
 
 export function createOAuthClient() {
@@ -65,6 +68,9 @@ export async function exchangeCode(code: string): Promise<{ user: SessionUser; a
 }
 
 export function sessionMiddleware() {
+  if (!process.env.SESSION_SECRET) {
+    console.warn('⚠ SESSION_SECRET não definido — usando valor padrão público (inseguro). Defina no .env.');
+  }
   return session({
     secret: process.env.SESSION_SECRET ?? 'smartfactory-dash-secret-change-me',
     resave: false,
