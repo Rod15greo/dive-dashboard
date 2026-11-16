@@ -1,0 +1,38 @@
+[
+  {
+    "id": "coord_exemplo",
+    "name": "Coordenação Exemplo",
+    "role": "Coordenação",
+    "scoreRole": "leadership",
+    "technical": false,
+    "coordinator": true,
+    "github": ["usuario-github-coord"],
+    "emails": ["coordenacao@example.com"],
+    "discordIds": ["000000000000000001"],
+    "firefliesNames": ["Coordenação Exemplo"]
+  },
+  {
+    "id": "dev_exemplo",
+    "name": "Dev Exemplo",
+    "role": "Unity",
+    "scoreRole": "technical",
+    "technical": true,
+    "coordinator": false,
+    "github": ["usuario-github-dev"],
+    "emails": ["dev@example.com"],
+    "discordIds": ["000000000000000002"],
+    "firefliesNames": ["Dev Exemplo", "Dev"]
+  },
+  {
+    "id": "design_exemplo",
+    "name": "Design Exemplo",
+    "role": "Design/UX",
+    "scoreRole": "nontechnical",
+    "technical": false,
+    "coordinator": false,
+    "github": [],
+    "emails": ["design@example.com"],
+    "discordIds": [],
+    "firefliesNames": ["Design Exemplo"]
+  }
+]

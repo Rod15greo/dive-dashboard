@@ -1,0 +1,14 @@
+[
+  {
+    "id": "unity",
+    "name": "Unity",
+    "leaderId": "coord_exemplo",
+    "memberIds": ["dev_exemplo"]
+  },
+  {
+    "id": "design",
+    "name": "Design / Tech Art",
+    "leaderId": null,
+    "memberIds": ["design_exemplo"]
+  }
+]

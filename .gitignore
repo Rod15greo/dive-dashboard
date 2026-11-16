@@ -21,3 +21,8 @@ dashboard-data.json
 *.log
 *.js.map
 backup/
+
+# Dados pessoais da equipe (e-mails, IDs de Discord) — use os *.example.json como modelo
+data/members.json
+data/teams.json
+data/dashboard-drive-data.json

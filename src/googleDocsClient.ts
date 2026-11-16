@@ -4,14 +4,16 @@ import type { MeetingOutput, FirefliesTranscript } from './meetingPrompt';
 import { getFolderForDate, moveFileToDrive } from './driveClient';
 import { validateEnv } from './utils';
 import { getGoogleAuth } from './googleAuth';
+import { getCoordinatorEmails } from './memberConfig';
 
-const COORD_EMAILS = [
-  'rodcar150102@gmail.com',
-  'anders@diverealities.com',
-  'nicolascosta@diverealities.com',
-  'jvferreira@diverealities.com',
-  'andre@vant.ia.br',
-];
+// E-mails com acesso de escrita às atas de coordenação. Defina COORD_SHARE_EMAILS
+// (separados por vírgula) no .env; se ausente, usa os membros com "coordinator": true
+// em data/members.json.
+function getCoordShareEmails(): string[] {
+  const fromEnv = (process.env.COORD_SHARE_EMAILS ?? '')
+    .split(',').map(e => e.trim()).filter(Boolean);
+  return fromEnv.length > 0 ? fromEnv : [...getCoordinatorEmails()];
+}
 
 async function createDoc(
   drive: ReturnType<typeof google.drive>,
@@ -45,7 +47,7 @@ async function createDoc(
       }
     }
 
-    for (const email of COORD_EMAILS) {
+    for (const email of getCoordShareEmails()) {
       await drive.permissions.create({
         fileId: docId,
         requestBody: { role: 'writer', type: 'user', emailAddress: email },

@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { TEAM, findByEmail } from './teamConfig';
+import { resolveDataFile } from '../memberConfig';
 import { collectGitHub, SprintMeta, MemberSprintCards } from './collectGitHub';
 import { collectDiscord } from './collectDiscord';
 import { collectMeetings } from './collectMeetings';
@@ -146,7 +147,7 @@ function computeTeams(
   members: DashboardMember[],
   sprints: SprintMeta[]
 ): TeamStatus[] {
-  const teamsPath = path.resolve(__dirname, '../../data/teams.json');
+  const teamsPath = resolveDataFile('teams.json');
   if (!fs.existsSync(teamsPath)) return [];
   const teamsConfig: Array<{ id: string; name: string; leaderId: string | null; memberIds: string[] }> =
     JSON.parse(fs.readFileSync(teamsPath, 'utf-8'));
@@ -254,7 +255,7 @@ export async function collectDashboardData(): Promise<DashboardData> {
     const disc     = discordData.byMember[m.id]?.totalMessages ?? 0;
     const drv      = driveData[m.id] ?? 0;
     const cardsInReview = (g as any).cardsInReview ?? 0;
-    const scoreRole = SCORE_ROLE_MAP[m.id] ?? (m.technical ? 'technical' : 'nontechnical');
+    const scoreRole = m.scoreRole ?? SCORE_ROLE_MAP[m.id] ?? (m.technical ? 'technical' : 'nontechnical');
 
     const { history, historicalRate } = buildSprintHistory(m.id, githubData.byMemberBySprint, githubData.sprints);
 

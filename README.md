@@ -77,13 +77,29 @@ docker compose exec dashboard rm -f storage/dashboard-cache.json
 
 ## Configuração dos times
 
-Edite os arquivos em `data/` para ajustar membros e times:
+Os arquivos com dados pessoais da equipe **não são versionados** (estão no `.gitignore`).
+Crie-os a partir dos exemplos:
 
-- `data/members.json` — cadastro dos membros (GitHub, emails, Discord)
-- `data/teams.json` — definição dos times e líderes
+```bash
+cp data/members.example.json data/members.json
+cp data/teams.example.json   data/teams.json
+# edite com os membros reais
+```
+
+- `data/members.json` — cadastro dos membros (GitHub, e-mails, IDs do Discord, nomes no Fireflies, papel de score, `coordinator`)
+- `data/teams.json` — definição dos times e líderes (usa os `id` de `members.json`)
 - `data/scoring-config.json` — pesos do sistema de score
 
-As alterações em `data/` são aplicadas automaticamente sem rebuild.
+Se `members.json`/`teams.json` não existirem, o servidor usa os `*.example.json` (dados fictícios) e avisa no log.
+
+As alterações em `data/` são lidas na inicialização: depois de editar, rode `docker compose restart`.
+
+> **Atualizando um servidor já existente:** como `data/members.json` e `data/teams.json` deixaram de ser
+> versionados, um `git pull` **apaga** esses arquivos da cópia local. Faça backup antes
+> (`cp data/members.json data/members.json.bak; cp data/teams.json data/teams.json.bak`) e restaure depois do pull.
+
+O compartilhamento das atas privadas de coordenação usa `COORD_SHARE_EMAILS` (e-mails separados por vírgula);
+se vazio, usa os membros com `"coordinator": true` em `data/members.json`.
 
 ---
 

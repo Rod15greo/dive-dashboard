@@ -2,6 +2,10 @@
  * Single source of truth for team member configuration.
  * Reads from data/members.json — edit that file to add/remove members or change roles.
  * Replaces the combination of teamConfig.ts + team_emails.json.
+ *
+ * data/members.json contém dados pessoais (e-mails, IDs de Discord) e NÃO é
+ * versionado. Copie data/members.example.json para data/members.json e preencha.
+ * Se o arquivo local não existir, o exemplo é usado (com aviso no log).
  */
 import * as fs from 'fs';
 import * as path from 'path';
@@ -20,8 +24,21 @@ export interface Member {
   firefliesNames: string[];
 }
 
+/**
+ * Resolve um arquivo de configuração em data/: usa o arquivo local (ignorado
+ * pelo git) e, se não existir, cai para a versão *.example.json.
+ */
+export function resolveDataFile(fileName: string): string {
+  const dataDir = path.resolve(__dirname, '../data');
+  const local = path.join(dataDir, fileName);
+  if (fs.existsSync(local)) return local;
+  const example = path.join(dataDir, fileName.replace(/\.json$/, '.example.json'));
+  console.warn(`⚠ data/${fileName} não encontrado — usando ${path.basename(example)} (dados fictícios)`);
+  return example;
+}
+
 function loadMembers(): Member[] {
-  const filePath = path.resolve(__dirname, '../data/members.json');
+  const filePath = resolveDataFile('members.json');
   return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as Member[];
 }
 
