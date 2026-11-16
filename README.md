@@ -10,6 +10,9 @@ Monitora entrega de sprints, atividade no GitHub, Discord e presença nas reuni�
 
 - [Docker](https://www.docker.com/get-started) + Docker Compose
 - Tokens de API do GitHub e Discord
+- `credentials.json` + `token.json` do Google (Drive/Docs/Calendar) e chaves de Fireflies, OpenAI e Notion — o servidor não inicia sem elas.
+  Os scripts que geram `token.json` (`auth`) e `dashboard-drive-data.json` (`dashboard:drive`) ficam no repositório
+  `meeting-automation`, não neste.
 
 ---
 
@@ -41,16 +44,24 @@ http://localhost:3000
 
 ## Variáveis obrigatórias
 
+Lista completa (com as opcionais) em `.env.example`.
+
 | Variável | Descrição |
 |----------|-----------|
-| `GITHUB_TOKEN` | Token de acesso pessoal do GitHub (com `read:project`, `repo`) |
-| `GITHUB_OWNER` | Organização ou usuário dono do projeto |
-| `GITHUB_PROJECT_NUMBER` | Número do Project v2 no GitHub |
+| `GITHUB_TOKEN` | Token de acesso pessoal do GitHub (com `read:project`, `repo`, `read:org`) |
+| `GITHUB_ORG` | Organização dona dos repositórios (padrão: `Dive-Realities`) |
+| `GITHUB_PROJECT_ID` | ID GraphQL do Project v2 (`PVT_...`), não o número do projeto |
 | `DISCORD_BOT_TOKEN` | Token do bot do Discord |
 | `DISCORD_SERVER_ID` | ID do servidor Discord |
 | `SESSION_SECRET` | String aleatória para segurança das sessões |
 | `DASHBOARD_OAUTH_CLIENT_ID` | Client ID do OAuth Google (para login) |
 | `DASHBOARD_OAUTH_CLIENT_SECRET` | Client Secret do OAuth Google |
+| `PUBLIC_URL` ou `PUBLIC_WEBHOOK_URL` | URL pública do servidor (redirect do login e webhook). `PUBLIC_WEBHOOK_URL` tem prioridade |
+| `FIREFLIES_API_KEY`, `OPENAI_API_KEY`, `NOTION_TOKEN` | Exigidas na inicialização do servidor (automação de atas) |
+| `GOOGLE_CREDENTIALS_PATH`, `GOOGLE_TOKEN_PATH` | Exigidas na inicialização (Drive/Docs/Calendar) |
+| `FIREFLIES_WEBHOOK_SECRET` | Secret do webhook do Fireflies. Com `NODE_ENV=production`, sem ele o webhook rejeita todas as chamadas |
+
+`NODE_ENV=production` liga o cookie `secure` (exige HTTPS; o servidor confia no primeiro proxy reverso via `trust proxy`).
 
 ---
 
@@ -117,6 +128,20 @@ O dashboard usa Google OAuth. Para configurar:
 4. Copie o Client ID e Secret para o `.env`
 
 Apenas emails autorizados (`data/members.json` com papel de coordenação) conseguem acessar o dashboard.
+
+---
+
+## API
+
+| Rota | Descrição |
+|------|-----------|
+| `GET /health` | Health check (sem autenticação) |
+| `GET /auth/google`, `GET /auth/callback`, `POST /auth/logout` | Login Google OAuth |
+| `GET /api/me` | Usuário logado |
+| `GET /api/dashboard` | Dados do dashboard (cache) |
+| `POST /api/dashboard/refresh` | Força nova coleta |
+| `GET /api/events` | Server-Sent Events (`dashboard-update`, `refresh-start`, `refresh-error`) |
+| `POST /webhooks/fireflies` | Webhook do Fireflies (assinatura HMAC) |
 
 ---
 
