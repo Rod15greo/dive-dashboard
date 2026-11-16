@@ -4,7 +4,7 @@ import * as path from 'path';
 import { findByFirefliesName, TEAM } from './teamConfig';
 
 const STORAGE_DIR   = path.resolve(__dirname, '../../storage');
-const SKIP_FILES    = new Set(['processed_meetings.json', 'bot_added_meetings.json', 'manualAttendance.json']);
+const SKIP_FILES    = new Set(['processed_meetings.json', 'bot_added_meetings.json', 'manualAttendance.json', 'dashboard-cache.json']);
 const MANUAL_PATH   = path.join(STORAGE_DIR, 'manualAttendance.json');
 
 interface RawTranscript {
@@ -15,7 +15,7 @@ interface RawTranscript {
 }
 
 interface ManualEntry { attended: number; invited: number; note?: string }
-interface ManualFile  { members: Record<string, ManualEntry> }
+interface ManualFile  { totalMeetings?: number; members: Record<string, ManualEntry> }
 
 export interface MeetingStats {
   meetingsAttended: number;
@@ -42,17 +42,22 @@ export async function collectMeetings(): Promise<MeetingsData> {
         meetingsList: entry ? [`${entry.attended}/${entry.invited} reuniões`] : [],
       };
     }
-    // count unique meeting occurrences from storage for totalMeetings header
-    const files = fs.readdirSync(STORAGE_DIR)
-      .filter(f => f.endsWith('.json') && !SKIP_FILES.has(f));
-    const seen = new Set<string>();
-    let total = 0;
-    for (const file of files) {
-      const raw = JSON.parse(fs.readFileSync(path.join(STORAGE_DIR, file), 'utf-8')) as RawTranscript;
-      if (/^teste\s/i.test(raw.title?.trim() ?? '')) continue;
-      const day = raw.dateString?.substring(0, 10) ?? '?';
-      const key = `${day}|${raw.title}`;
-      if (!seen.has(key)) { seen.add(key); total++; }
+    // totalMeetings: usa campo explícito do arquivo se existir, senão conta arquivos de storage
+    let total: number;
+    if (manual.totalMeetings != null) {
+      total = manual.totalMeetings;
+    } else {
+      const files = fs.readdirSync(STORAGE_DIR)
+        .filter(f => f.endsWith('.json') && !SKIP_FILES.has(f));
+      const seen = new Set<string>();
+      total = 0;
+      for (const file of files) {
+        const raw = JSON.parse(fs.readFileSync(path.join(STORAGE_DIR, file), 'utf-8')) as RawTranscript;
+        if (/^teste\s/i.test(raw.title?.trim() ?? '')) continue;
+        const day = raw.dateString?.substring(0, 10) ?? '?';
+        const key = `${day}|${raw.title}`;
+        if (!seen.has(key)) { seen.add(key); total++; }
+      }
     }
     console.log(`   🎙  ${total} reuniões únicas no período`);
     return { byMember, totalMeetings: total, unknownEmails: [], unknownSpeakers: [] };
